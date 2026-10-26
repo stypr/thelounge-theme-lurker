@@ -1,0 +1,1128 @@
+/*
+ * Lurker-inspired custom stylesheet for The Lounge
+ *
+ * The palette and layout language mirror Lurker's default theme while the
+ * selectors remain native to The Lounge. No Lurker assets are copied.
+ */
+
+:root {
+  /* Lurker's default Monokai Pro-inspired palette. */
+  --lurker-bg: #212022;
+  --lurker-bg-soft: #2c2a2e;
+  --lurker-fg: #fcfcfa;
+  --lurker-muted: #939293;
+  --lurker-accent: #a99dec;
+  --lurker-good: #b3db82;
+  --lurker-warn: #f9d978;
+  --lurker-bad: #ed6c89;
+  --lurker-orange: #fc9867;
+  --lurker-cyan: #78dce8;
+  --lurker-border: #2c2a2e;
+
+  /* Map Lurker's tokens onto The Lounge's public theme variables. */
+  --body-color: var(--lurker-fg);
+  --body-color-muted: var(--lurker-muted);
+  --body-bg-color: var(--lurker-bg);
+  --window-bg-color: var(--lurker-bg);
+  --window-heading-color: var(--lurker-muted);
+  --button-color: var(--lurker-accent);
+  --button-text-color-hover: var(--lurker-fg);
+  --link-color: var(--lurker-accent);
+  --overlay-bg-color: rgba(0, 0, 0, 0.5);
+  --date-marker-color: var(--lurker-muted);
+  --unread-marker-color: var(--lurker-warn);
+  --highlight-bg-color: rgba(249, 217, 120, 0.12);
+  --highlight-border-color: transparent;
+  --upload-progressbar-color: var(--lurker-accent);
+
+  --font-size: 14px;
+  --font-size-msg: 14px;
+  --font-size-channel-list: 14px;
+  --font-weight-msg: 400;
+  --font-weight-user: 400;
+  --message-line-height: 1.55;
+  --member-line-height: 1.55;
+  --channel-line-height: 1.4;
+  --composer-line-height: 22px;
+}
+
+/* --- Foundation --------------------------------------------------------- */
+
+html,
+body,
+input,
+select,
+textarea {
+  font-family: "Input Mono", "Input", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace !important;
+}
+
+body {
+  background: var(--lurker-bg);
+  color: var(--lurker-fg);
+  font-size: var(--font-size);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+  text-rendering: optimizeLegibility;
+  text-size-adjust: none;
+}
+
+a,
+a:focus,
+a:hover {
+  color: var(--lurker-accent);
+}
+
+::selection {
+  background: rgba(169, 157, 236, 0.28);
+  color: var(--lurker-fg);
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--lurker-muted);
+  border: 2px solid var(--lurker-bg);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--lurker-accent);
+}
+
+#viewport,
+#viewport.menu-open {
+  padding: 0;
+}
+
+.window,
+#context-menu,
+.mentions-popup,
+.textcomplete-menu,
+#confirm-dialog {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* --- Left buffer list --------------------------------------------------- */
+
+#sidebar {
+  background: var(--lurker-bg);
+  border-right: 1px solid var(--lurker-border);
+  color: var(--lurker-fg);
+  width: 220px;
+}
+
+#sidebar .logo-container {
+  display: none;
+}
+
+.networks {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.network {
+  margin-bottom: 2px;
+  padding-top: 4px;
+}
+
+.network + .network {
+  border-top: 1px solid var(--lurker-border);
+  margin-top: 4px;
+}
+
+#sidebar .empty,
+.channel-list-item {
+  color: var(--lurker-fg);
+  font-size: var(--font-size-channel-list);
+  line-height: var(--channel-line-height);
+}
+
+.channel-list-item {
+  background: transparent;
+  border-left: 2px solid transparent;
+  border-radius: 0;
+  min-height: 0;
+  padding: 1px 8px;
+  transition: none;
+}
+
+.channel-list-item[data-type="lobby"] {
+  color: var(--lurker-fg) !important;
+  font-size: 14px !important;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  padding: 4px 8px 4px 0;
+  text-transform: uppercase;
+}
+
+.channel-list-item[data-type="lobby"]:hover,
+.channel-list-item[data-type="lobby"].active {
+  color: var(--lurker-fg) !important;
+}
+
+.channel-list-item:not([data-type="lobby"]) {
+  padding-left: 30px;
+}
+
+#sidebar .network .collapse-network {
+  padding-left: 8px;
+  width: 28px;
+}
+
+#sidebar .network .collapse-network-icon {
+  height: 18px;
+  width: 16px;
+}
+
+.channel-list-item:hover,
+.channel-list-item:focus,
+.channel-list-item.active {
+  background: var(--lurker-bg-soft);
+  color: var(--lurker-fg);
+}
+
+.channel-list-item.active {
+  border-left-color: var(--lurker-accent);
+}
+
+.channel-list-item::before,
+.channel-list-item .add-channel::before,
+#sidebar .collapse-network-icon::before {
+  color: var(--lurker-muted);
+}
+
+/* Lurker draws its tree from connected borders rather than box-drawing glyphs.
+   Splitting the spine at each row's midpoint keeps every branch continuous. */
+#sidebar .channels > .channel-list-item:not([data-type="lobby"])::before {
+  border-bottom: 1px solid var(--lurker-border);
+  border-left: 1px solid var(--lurker-border);
+  content: "";
+  height: 50%;
+  left: 15px;
+  margin: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 8px;
+}
+
+#sidebar .channels > .channel-list-item:not([data-type="lobby"]):not(:last-child)::after {
+  border-left: 1px solid var(--lurker-border);
+  bottom: 0;
+  content: "";
+  left: 15px;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  width: 0;
+}
+
+.channel-list-item[data-type="lobby"]::before {
+  color: var(--lurker-muted);
+}
+
+.channel-list-item .badge,
+.channel-list-item .highlight {
+  background: transparent;
+  border-radius: 0;
+  color: var(--lurker-warn);
+  font-size: 12px;
+  padding: 1px 2px;
+  margin-top: 2px;
+}
+
+.channel-list-item.unread:not(.highlight) .name,
+.channel-list-item .unread-marker {
+  color: var(--lurker-accent);
+}
+
+#footer {
+  background: var(--lurker-bg);
+  border-top: 1px solid var(--lurker-border);
+}
+
+#footer .icon,
+#footer button {
+  color: var(--lurker-accent);
+  border-radius: 0;
+}
+
+#footer .icon:hover,
+#footer button:hover {
+  background: transparent;
+  color: var(--lurker-fg);
+}
+
+/* --- Topic bar ---------------------------------------------------------- */
+
+.header,
+#chat .header {
+  background: var(--lurker-bg);
+  border-bottom: 1px solid var(--lurker-border);
+  color: var(--lurker-fg);
+  height: 38px;
+  line-height: 1.55;
+  padding: 0 8px;
+}
+
+#chat .header .title {
+  padding-left: 0;
+}
+
+#chat .header .title,
+#chat .header .channel-name {
+  color: var(--lurker-accent);
+  font-size: var(--font-size);
+  font-weight: 400;
+}
+
+#chat .header .topic,
+#chat .topic-container,
+#chat .header .topic-text {
+  color: var(--lurker-muted);
+  font-size: var(--font-size);
+  font-weight: 400;
+}
+
+#chat button.menu,
+#chat button.mentions,
+#chat button.search,
+#chat button.close,
+#viewport .lt,
+#viewport .rt {
+  color: var(--lurker-accent);
+  height: 36px;
+  width: 28px;
+}
+
+#chat button.menu:hover,
+#chat button.mentions:hover,
+#chat button.search:hover,
+#chat button.close:hover,
+#viewport .lt:hover,
+#viewport .rt:hover {
+  color: var(--lurker-fg);
+  opacity: 1;
+}
+
+/* --- Conversation ------------------------------------------------------- */
+
+#chat .chat-view,
+#chat .messages,
+#windows,
+#chat .content,
+.window {
+  background: var(--lurker-bg);
+}
+
+#chat .messages {
+  padding: 4px 0;
+}
+
+#chat .msg,
+#chat .msg[data-type="condensed"] .msg,
+.messages .msg {
+  align-items: baseline;
+  color: var(--lurker-fg);
+  font-size: var(--font-size-msg);
+  font-weight: var(--font-weight-msg);
+  line-height: var(--message-line-height);
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+#chat .msg:not([data-type="condensed"]) {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+/* A condensed block contains a summary followed by nested message rows. Keep
+   the shared gutter on the outer block so both levels use the same columns. */
+#chat .msg[data-type="condensed"] {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+#chat .msg[data-type="condensed"] > .condensed-summary {
+  align-items: baseline;
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+#chat .msg[data-type="condensed"] > .msg {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#chat .msg:hover {
+  background: var(--lurker-bg-soft);
+}
+
+#chat .time {
+  box-sizing: border-box;
+  color: var(--lurker-muted);
+  flex: 0 0 80px;
+  font-size: var(--font-size-msg);
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  opacity: 1;
+  order: initial;
+  padding: 0 1ch 0 0;
+  transition: none;
+  white-space: nowrap;
+  width: 80px;
+}
+
+#chat .time:hover,
+#chat .time:focus {
+  color: var(--lurker-fg);
+}
+
+@media (min-width: 480px) {
+  #chat .from {
+    box-sizing: border-box;
+    color: var(--lurker-fg);
+    flex: 0 0 136px;
+    line-height: inherit;
+    overflow: hidden;
+    padding-left: 0;
+    padding-bottom: 0;
+    padding-right: 1ch;
+    padding-top: 0;
+    text-align: right;
+    white-space: nowrap;
+    width: 136px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+#chat .from .user {
+  font-weight: var(--font-weight-user);
+}
+
+/* Lurker keeps your own nick neutral instead of hashing it into the palette. */
+#chat .msg.self .from .user {
+  color: var(--lurker-fg) !important;
+}
+
+#chat .from::after {
+  display: none;
+}
+
+#chat .content {
+  border-left: 1px solid var(--lurker-border);
+  color: var(--lurker-fg);
+  flex: 1 1 auto;
+  line-height: inherit;
+  min-width: 0;
+  padding-bottom: 0;
+  padding-left: 1ch;
+  padding-right: 6px;
+  padding-top: 0;
+}
+
+#chat .msg.self,
+#chat .msg.self .content {
+  background: transparent;
+  color: var(--lurker-fg);
+}
+
+#chat .msg[data-type="action"],
+#chat .msg[data-type="action"] .content,
+#chat .msg[data-type="action"] .text {
+  color: var(--lurker-fg) !important;
+}
+
+#chat .msg[data-type="action"] .from::before {
+  color: var(--lurker-muted) !important;
+}
+
+#chat .msg[data-type="action"] .user,
+#chat .msg[data-type="action"].self .user {
+  color: var(--lurker-accent) !important;
+}
+
+#chat .msg[data-type="join"] .from,
+#chat .msg[data-type="login"] .from {
+  color: var(--lurker-good);
+}
+
+#chat .msg[data-type="join"] .content,
+#chat .msg[data-type="login"] .content,
+#chat .msg[data-type="part"] .from,
+#chat .msg[data-type="part"] .content,
+#chat .msg[data-type="quit"] .from,
+#chat .msg[data-type="quit"] .content,
+#chat .msg[data-type="away"] .from,
+#chat .msg[data-type="away"] .content,
+#chat .msg[data-type="back"] .from,
+#chat .msg[data-type="back"] .content {
+  color: var(--lurker-muted);
+  font-style: italic;
+}
+
+#chat .msg.error,
+#chat .msg.error .from,
+#chat .msg.error .content,
+#chat .msg[data-type="kick"] .from,
+#chat .msg[data-type="kick"] .content {
+  color: var(--lurker-bad) !important;
+}
+
+#chat .chat-view[data-type="channel"] .msg.highlight {
+  background: rgba(249, 217, 120, 0.12) !important;
+  border-left: 0 !important;
+}
+
+#chat .chat-view[data-type="channel"] .msg.highlight .content,
+#chat .chat-view[data-type="channel"] .msg.highlight .text {
+  color: var(--lurker-fg);
+  font-weight: 400;
+}
+
+#chat .unread-marker,
+#chat .date-marker {
+  color: var(--lurker-muted);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 5px 8px;
+}
+
+#chat .unread-marker::before {
+  border-color: var(--lurker-border);
+  border-style: solid;
+}
+
+#chat .unread-marker-text::before {
+  background: var(--lurker-bg);
+  color: var(--lurker-accent);
+  padding: 0 8px;
+}
+
+#chat .date-marker::before {
+  border-color: var(--lurker-border);
+  border-style: solid;
+}
+
+#chat .date-marker-text::before {
+  background: var(--lurker-bg);
+  color: var(--lurker-muted);
+  padding: 0 8px;
+}
+
+/* Lurker's dark nick palette. The Lounge hashes into 32 slots while Lurker
+   hashes into 19, so slots 20-32 intentionally repeat the first 13 hues. */
+.user.color-1 { color: #ff6188; }
+.user.color-2 { color: #fc9867; }
+.user.color-3 { color: #ffd866; }
+.user.color-4 { color: #a9dc76; }
+.user.color-5 { color: #78dce8; }
+.user.color-6 { color: #ab9df2; }
+.user.color-7 { color: #ed6c89; }
+.user.color-8 { color: #d4996e; }
+.user.color-9 { color: #f9d978; }
+.user.color-10 { color: #b3db82; }
+.user.color-11 { color: #91dae6; }
+.user.color-12 { color: #a99dec; }
+.user.color-13 { color: #ff7494; }
+.user.color-14 { color: #ffaf75; }
+.user.color-15 { color: #c4e29a; }
+.user.color-16 { color: #a0f1ff; }
+.user.color-17 { color: #b6aaff; }
+.user.color-18 { color: #7ba4ff; }
+.user.color-19 { color: #6799f3; }
+.user.color-20 { color: #ff6188; }
+.user.color-21 { color: #fc9867; }
+.user.color-22 { color: #ffd866; }
+.user.color-23 { color: #a9dc76; }
+.user.color-24 { color: #78dce8; }
+.user.color-25 { color: #ab9df2; }
+.user.color-26 { color: #ed6c89; }
+.user.color-27 { color: #d4996e; }
+.user.color-28 { color: #f9d978; }
+.user.color-29 { color: #b3db82; }
+.user.color-30 { color: #91dae6; }
+.user.color-31 { color: #a99dec; }
+.user.color-32 { color: #ff7494; }
+
+#chat .toggle-content {
+  background: var(--lurker-bg-soft);
+  border: 1px solid var(--lurker-border);
+  border-radius: 2px;
+  box-shadow: none;
+  color: var(--lurker-fg);
+}
+
+#chat .toggle-content .body {
+  color: var(--lurker-muted);
+}
+
+code,
+pre,
+.irc-monospace,
+#chat .msg[data-type="monospace_block"] .text {
+  background: var(--lurker-bg-soft);
+  border-radius: 2px;
+  color: var(--lurker-fg);
+}
+
+/* --- Member list -------------------------------------------------------- */
+
+#chat .userlist {
+  background: var(--lurker-bg);
+  border-left: 1px solid var(--lurker-border);
+  width: 180px;
+}
+
+#chat .userlist .search {
+  background: var(--lurker-bg);
+  border-bottom: 1px solid var(--lurker-border);
+  color: var(--lurker-fg);
+}
+
+#chat .userlist .count {
+  background: var(--lurker-bg);
+  border-bottom: 1px solid var(--lurker-border);
+  height: 38px;
+}
+
+#chat .userlist .count .search,
+#chat .userlist .search {
+  line-height: var(--member-line-height);
+  padding: 8px 30px 8px 10px;
+}
+
+#chat .userlist .names {
+  padding: 4px 0;
+}
+
+#chat .userlist .search::placeholder,
+#chat .count::before {
+  color: var(--lurker-muted) !important;
+}
+
+#chat .userlist .user {
+  border-radius: 0;
+  display: flex;
+  line-height: var(--member-line-height);
+  min-height: 0;
+  padding: 1px 10px;
+}
+
+#chat .userlist .user:not([class*="color-"]) {
+  color: var(--lurker-accent);
+}
+
+#chat .userlist .user:hover,
+#chat .userlist .user.active {
+  background: var(--lurker-bg-soft);
+}
+
+#chat .userlist .user.away {
+  color: var(--lurker-muted) !important;
+}
+
+#chat .user-mode {
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+
+#chat .user-mode:first-child {
+  margin-top: 0;
+}
+
+#chat .user-mode::before {
+  background: var(--lurker-bg-soft);
+  border-left: 2px solid var(--lurker-muted);
+  color: var(--lurker-muted);
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+  line-height: var(--member-line-height);
+  padding: 3px 8px;
+  text-transform: uppercase;
+}
+
+/* Make privilege groups scan like tabs while retaining The Lounge's labels. */
+#chat .user-mode.owner::before {
+  border-left-color: var(--lurker-bad);
+  color: var(--lurker-bad);
+}
+
+#chat .user-mode.admin::before {
+  border-left-color: var(--lurker-orange);
+  color: var(--lurker-orange);
+}
+
+#chat .user-mode.op::before {
+  border-left-color: var(--lurker-accent);
+  color: var(--lurker-accent);
+}
+
+#chat .user-mode.half-op::before {
+  border-left-color: var(--lurker-cyan);
+  color: var(--lurker-cyan);
+}
+
+#chat .user-mode.voice::before {
+  border-left-color: var(--lurker-good);
+  color: var(--lurker-good);
+}
+
+/* The Lounge mode classes vary by server/version; these cover current names. */
+#chat .userlist .user.owner,
+#chat .userlist .user.mode-owner {
+  color: var(--lurker-bad);
+}
+
+#chat .userlist .user.admin,
+#chat .userlist .user.mode-admin {
+  color: var(--lurker-orange);
+}
+
+#chat .userlist .user.op,
+#chat .userlist .user.mode-op {
+  color: var(--lurker-accent);
+}
+
+#chat .userlist .user.half-op,
+#chat .userlist .user.mode-halfop {
+  color: var(--lurker-cyan);
+}
+
+#chat .userlist .user.voice,
+#chat .userlist .user.mode-voice {
+  color: var(--lurker-good);
+}
+
+/* --- Composer ----------------------------------------------------------- */
+
+#form {
+  align-items: flex-end;
+  background: var(--lurker-bg);
+  border: 0;
+  border-top: 1px solid var(--lurker-border);
+  border-radius: 0;
+  padding: 8px 12px;
+}
+
+#windows #form .input,
+#form #input {
+  background: transparent !important;
+  border: 0;
+  color: var(--lurker-fg);
+  font-size: var(--font-size-msg) !important;
+  height: var(--composer-line-height);
+  line-height: var(--composer-line-height);
+  margin: 0 8px;
+  min-height: var(--composer-line-height);
+  max-height: calc(var(--composer-line-height) * 5);
+  padding: 0;
+}
+
+#form #input::placeholder {
+  color: var(--lurker-muted) !important;
+  font-style: italic;
+}
+
+#form #input:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+#form #nick {
+  background: transparent;
+  color: var(--lurker-accent);
+  font-size: var(--font-size-msg);
+  line-height: var(--composer-line-height);
+  margin: 0;
+  padding: 0;
+}
+
+#form #nick::after {
+  content: " >";
+}
+
+#form #submit,
+#form #upload {
+  color: var(--lurker-accent);
+  height: var(--composer-line-height);
+  width: 28px;
+}
+
+#form #submit:hover,
+#form #upload:hover,
+#form #submit:focus,
+#form #upload:focus {
+  color: var(--lurker-fg);
+  opacity: 1;
+}
+
+/* --- Menus, popovers, and settings ------------------------------------- */
+
+/* The footer icon characters live on the button itself, unlike most of The
+   Lounge's pseudo-element icons. Keep that element on the bundled icon font. */
+#footer .icon {
+  font-family: FontAwesome !important;
+  font-style: normal;
+  font-weight: 400;
+}
+
+#context-menu,
+.mentions-popup,
+.textcomplete-menu {
+  background: var(--lurker-bg);
+  border: 1px solid var(--lurker-border);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  color: var(--lurker-fg);
+}
+
+.context-menu-divider {
+  background: var(--lurker-border);
+}
+
+.context-menu-item,
+.textcomplete-item,
+.textcomplete-item a {
+  border-radius: 0;
+  color: var(--lurker-fg) !important;
+}
+
+.context-menu-item:hover,
+.context-menu-item:focus,
+.context-menu-item.active,
+.textcomplete-item:hover,
+.textcomplete-item:focus,
+.textcomplete-menu .active {
+  background: var(--lurker-bg-soft);
+  color: var(--lurker-fg) !important;
+}
+
+.input,
+select,
+textarea,
+form.message-search input {
+  background: var(--lurker-bg);
+  border-color: var(--lurker-border);
+  border-radius: 0;
+  color: var(--lurker-fg);
+}
+
+.jump-to-input .input {
+  letter-spacing: -0.5px;
+}
+
+/* Core styles use a dark placeholder on several non-settings fields. Keep
+   every text/search surface legible instead of fixing individual screens. */
+body input::placeholder,
+body textarea::placeholder,
+.input::placeholder,
+.jump-to-input .input::placeholder,
+form.message-search input::placeholder,
+#form #input::placeholder {
+  color: var(--lurker-muted) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: var(--lurker-muted);
+}
+
+.input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--lurker-accent);
+  box-shadow: none;
+  outline: 1px solid var(--lurker-accent);
+}
+
+/* Dracula previously supplied the high-specificity settings-control colors.
+   These rules make the replacement theme self-contained. */
+#settings {
+  color-scheme: dark;
+}
+
+#settings .input,
+#settings input[type="text"],
+#settings input[type="password"],
+#settings input[type="email"],
+#settings input[type="number"],
+#settings input[type="search"],
+#settings input[type="url"],
+#settings select,
+#settings textarea {
+  background-color: var(--lurker-bg-soft) !important;
+  border: 1px solid var(--lurker-border) !important;
+  border-radius: 0;
+  caret-color: var(--lurker-accent);
+  color: var(--lurker-fg) !important;
+  -webkit-text-fill-color: var(--lurker-fg);
+}
+
+#settings .input::placeholder,
+#settings input::placeholder,
+#settings textarea::placeholder {
+  color: var(--lurker-muted) !important;
+  opacity: 1;
+  -webkit-text-fill-color: var(--lurker-muted);
+}
+
+#settings .input:not(:disabled):hover,
+#settings .input:not(:disabled):focus,
+#settings input:not(:disabled):hover,
+#settings input:not(:disabled):focus,
+#settings select:not(:disabled):hover,
+#settings select:not(:disabled):focus,
+#settings textarea:not(:disabled):hover,
+#settings textarea:not(:disabled):focus {
+  border-color: var(--lurker-accent) !important;
+  box-shadow: none;
+  outline: none;
+}
+
+#settings .input:disabled,
+#settings input:disabled,
+#settings select:disabled,
+#settings textarea:disabled {
+  background-color: var(--lurker-bg) !important;
+  color: var(--lurker-muted) !important;
+  opacity: 0.7;
+  -webkit-text-fill-color: var(--lurker-muted);
+}
+
+#settings option,
+#settings optgroup {
+  background: var(--lurker-bg-soft);
+  color: var(--lurker-fg);
+}
+
+#settings input[type="checkbox"],
+#settings input[type="radio"],
+#settings input[type="range"] {
+  accent-color: var(--lurker-accent);
+}
+
+#settings input[type="color"] {
+  background: var(--lurker-bg-soft);
+  border: 1px solid var(--lurker-border);
+  color-scheme: dark;
+}
+
+#settings textarea#user-specified-css-input {
+  background: #171619 !important;
+  color: var(--lurker-fg) !important;
+  line-height: 1.5;
+  tab-size: 2;
+  -webkit-text-fill-color: var(--lurker-fg);
+}
+
+.btn {
+  background: transparent;
+  border: 1px solid var(--lurker-accent);
+  border-radius: 0;
+  color: var(--lurker-accent);
+  letter-spacing: 0;
+  text-transform: none;
+  word-spacing: 0;
+}
+
+.btn:focus,
+.btn:hover {
+  background: rgba(169, 157, 236, 0.15);
+  color: var(--lurker-fg);
+  box-shadow: none;
+}
+
+.window h2,
+.window h3,
+.settings-menu button.active,
+.settings-menu button:hover {
+  color: var(--lurker-fg);
+}
+
+/* Preserve IRC color spans; only neutralize Dracula's forced backgrounds. */
+#chat .content span[class*="irc-"] {
+  font-family: inherit;
+}
+
+/* --- Small screens ------------------------------------------------------ */
+
+@media (max-width: 768px) {
+  :root {
+    /* Lurker keeps its 14px type on phones and creates touch room around it. */
+    --font-size: 14px;
+    --font-size-msg: 14px;
+    --font-size-channel-list: 14px;
+  }
+
+  #sidebar {
+    left: 0;
+    transform: translateX(-100%);
+    width: min(86vw, 320px);
+  }
+
+  #viewport.menu-open #sidebar,
+  #viewport.menu-dragging #sidebar {
+    transform: translateX(0);
+  }
+
+  #chat .header {
+    height: 48px;
+    min-height: 48px;
+    padding: 0 6px;
+  }
+
+  #chat button.menu,
+  #chat button.mentions,
+  #chat button.search,
+  #chat button.close,
+  #viewport .lt,
+  #viewport .rt {
+    height: 44px;
+    min-width: 36px;
+    width: 36px;
+  }
+
+  #chat .header .title {
+    min-width: 0;
+    padding-left: 2px;
+  }
+
+  #chat .header .topic {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #chat .userlist {
+    background: var(--lurker-bg);
+    transform: translateX(100%);
+    width: min(86vw, 320px);
+  }
+
+  #viewport.userlist-open #chat .userlist {
+    transform: translateX(0);
+  }
+
+  #chat .messages {
+    padding: 4px 0 14px;
+  }
+
+  /* Lurker's mobile layout is a compact two-row cluster: nick + time in the
+     head, followed by the message body. Reset the desktop fixed columns. */
+  #chat .msg:not([data-type="condensed"]) {
+    align-items: baseline;
+    display: grid;
+    grid-template-areas:
+      "from time"
+      "content content";
+    grid-template-columns: minmax(0, 1fr) auto;
+    margin-top: 10px;
+    padding: 2px 8px;
+  }
+
+  #chat .msg:not([data-type="condensed"]) > .time {
+    display: block;
+    flex: none;
+    font-size: 0.85em;
+    grid-area: time;
+    line-height: var(--message-line-height);
+    padding: 0;
+    text-align: right;
+    width: auto;
+  }
+
+  #chat .msg:not([data-type="condensed"]) > .from {
+    display: block;
+    flex: none;
+    grid-area: from;
+    line-height: var(--message-line-height);
+    overflow: hidden;
+    padding: 0;
+    text-align: left;
+    text-overflow: ellipsis;
+    width: auto;
+  }
+
+  #chat .msg:not([data-type="condensed"]) > .content {
+    border: 0;
+    display: block;
+    grid-area: content;
+    line-height: var(--message-line-height);
+    min-width: 0;
+    padding: 0 0 0 1ch;
+  }
+
+  #chat .msg[data-type="condensed"] {
+    display: block;
+    margin-top: 10px;
+    padding: 2px 8px;
+  }
+
+  #chat .msg[data-type="condensed"] > .condensed-summary {
+    display: block;
+  }
+
+  #chat .condensed-summary > .time,
+  #chat .condensed-summary > .from {
+    display: none;
+  }
+
+  #chat .msg[data-type="condensed"] > .condensed-summary > .content {
+    border: 0;
+    display: block;
+    padding: 0;
+  }
+
+  #chat .msg[data-type="condensed"] > .msg {
+    margin-top: 4px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #chat .unread-marker,
+  #chat .date-marker {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  #form {
+    padding: 8px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+
+  #form #input {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+
+  #form #submit,
+  #form #upload {
+    min-width: 36px;
+    width: 36px;
+  }
+
+  .window,
+  #footer .icon {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 479px) {
+  #chat .messages {
+    padding: 4px 0;
+  }
+
+  #sidebar,
+  #chat .userlist {
+    width: 88vw;
+  }
+}

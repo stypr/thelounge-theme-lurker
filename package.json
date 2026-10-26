@@ -1,0 +1,25 @@
+{
+  "name": "thelounge-theme-lurker",
+  "version": "1.0.0",
+  "main": "package.json",
+  "homepage": "https://github.com/stypr/thelounge-theme-lurker",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stypr/thelounge-theme-lurker.git"
+  },
+  "author": "Harold Kim <me@harold.kim>",
+  "license": "MPL-2.0",
+  "keywords": [
+    "thelounge",
+    "thelounge-theme"
+  ],
+  "thelounge": {
+    "css": "lurker.css",
+    "name": "lurker",
+    "type": "theme",
+    "themeColor": "#212022"
+  },
+  "bugs": {
+    "url": "https://github.com/stypr/thelounge-theme-lurker/issues"
+  }
+}
