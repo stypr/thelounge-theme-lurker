@@ -1,5 +1,5 @@
 /*
- * Lurker-inspired custom stylesheet for The Lounge
+ * Lurker-inspired theme for thelounge
  *
  * The palette and layout language mirror Lurker's default theme while the
  * selectors remain native to The Lounge. No Lurker assets are copied.
@@ -70,6 +70,40 @@ body {
   -moz-osx-font-smoothing: auto;
   text-rendering: optimizeLegibility;
   text-size-adjust: none;
+}
+
+/* Match Lurker's flat scrollbar on Windows/Linux as well as macOS. Firefox
+   uses the standard properties; Chromium/WebKit uses the pseudo-elements. */
+* {
+  scrollbar-color: var(--lurker-bg-soft) transparent;
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb:horizontal,
+*::-webkit-scrollbar-thumb:vertical {
+  background: var(--lurker-bg-soft);
+  border: 2px solid var(--lurker-bg);
+  border-radius: 0;
+}
+
+*::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:horizontal:hover,
+*::-webkit-scrollbar-thumb:vertical:hover {
+  background: var(--lurker-muted);
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 a,
@@ -242,7 +276,7 @@ a:hover {
   color: var(--lurker-warn);
   font-size: 12px;
   padding: 2px 2px 0px 2px;
-  margin-top: 2px;
+  margin-top: 3px;
   margin-bottom: 4px;
   margin-right: 3px;
 }
@@ -322,6 +356,7 @@ a:hover {
   color: var(--lurker-accent);
   height: 36px;
   width: 28px;
+  margin-top: 2px;
 }
 
 #chat button.menu:hover,
@@ -505,6 +540,10 @@ a:hover {
   border-left: 0 !important;
 }
 
+#chat .chat-view[data-type=channel] .msg.highlight .time {
+  padding-left: 0 !important;
+}
+
 #chat .chat-view[data-type="channel"] .msg.highlight .content,
 #chat .chat-view[data-type="channel"] .msg.highlight .text {
   color: var(--lurker-fg);
@@ -514,15 +553,18 @@ a:hover {
 #chat .unread-marker,
 #chat .date-marker {
   color: var(--lurker-muted);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.4;
   margin: 5px 8px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
 #chat .unread-marker::before {
-  border-color: var(--lurker-border);
-  border-style: solid;
+  border: 0;
+  border-top: 1px dashed var(--body-color-muted);
+  opacity: 0.6;
 }
 
 #chat .unread-marker-text::before {
@@ -532,8 +574,9 @@ a:hover {
 }
 
 #chat .date-marker::before {
-  border-color: var(--lurker-border);
-  border-style: solid;
+  border: 0;
+  border-top: 1px dashed var(--body-color-muted);
+  opacity: 0.6;
 }
 
 #chat .date-marker-text::before {
@@ -1187,6 +1230,10 @@ textarea:focus {
   box-shadow: none;
 }
 
+.settings-menu {
+  top: 38px;
+}
+
 .window h2,
 .window h3,
 .settings-menu button.active,
@@ -1457,50 +1504,54 @@ textarea:focus {
 /* --- Input Colors ------------------------------------------------- */
 
 #chat .msg[data-type=invite] .from:before {
-    color: var(--body-color-muted) !important;
-    font-size: 9pt;
+  color: var(--body-color-muted) !important;
+  font-size: 9pt;
 }
 
 #chat .msg[data-type=login] .from:before {
-    color: var(--body-color-muted) !important;
-    font-size: 9pt;
+  color: var(--body-color-muted) !important;
+  font-size: 9pt;
 }
 
 #chat .msg[data-type=logout] .from:before {
-    color: var(--body-color-muted) !important;
-    font-size: 9pt;
+  color: var(--body-color-muted) !important;
+  font-size: 9pt;
 }
 
 #chat .msg[data-type=part] .from:before,#chat .msg[data-type=quit] .from:before {
-    color: var(--body-color-muted) !important;
-    font-size: 9pt;
+  color: var(--body-color-muted) !important;
+  font-size: 9pt;
 }
 
 #chat .msg[data-type=topic] .from:before {
-    color: var(--body-color-muted) !important;
-    font-size: 9pt;
+  color: var(--body-color-muted) !important;
+  font-size: 9pt;
 }
 
 #chat .msg[data-type=mode] .from:before,#chat .msg[data-type=mode_channel] .from:before,#chat .msg[data-type=mode_user] .from:before {
-    color: var(--body-color-muted);
-    font-size: 9pt;
+  color: var(--body-color-muted);
+  font-size: 9pt;
 }
 
 #chat .msg[data-type=join] .from:before {
-    color: var(--body-color-muted) !important;
-    font-size: 9pt;
+  color: var(--body-color-muted) !important;
+  font-size: 9pt;
 }
 
 #chat .msg[data-type=whois] .from:before, #chat .msg[data-type=chghost] .from:before, #chat .msg[data-type=nick] .from:before {
-    color: var(--body-color-muted) !important;
-    font-size: 9pt;
+  color: var(--body-color-muted) !important;
+  font-size: 9pt;
 }
 
 #chat .msg[data-command=motd] .from:before {
-    color: var(--body-color-muted) !important;
-    font-size: 9pt;
+  color: var(--body-color-muted) !important;
+  font-size: 9pt;
 }
 
 #chat .msg[data-type="action"] .from::before {
-    font-size: 9pt;
+  font-size: 9pt;
+}
+
+.channel-list-item .close:before {
+  margin-top: 2px;
 }
