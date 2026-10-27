@@ -285,9 +285,18 @@ a:hover {
     margin-right: 3px;
 }
 
-.channel-list-item.unread:not(.highlight) .name,
+.channel-list-item .highlight {
+    color: var(--lurker-warn) !important;
+}
+
+.channel-list-item.has-unread:not(.has-highlight) .name,
 .channel-list-item .unread-marker {
   color: var(--lurker-accent);
+}
+
+.channel-list-item.has-unread.has-highlight .name,
+.channel-list-item .unread-marker {
+  color: var(--lurker-warn);
 }
 
 #footer {
@@ -742,10 +751,31 @@ pre,
 
 #chat .userlist .user {
   border-radius: 0;
-  display: flex;
+  display: block;
   line-height: var(--member-line-height);
+  max-width: 100%;
   min-height: 0;
+  min-width: 0;
+  overflow: hidden;
   padding: 1px 10px;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* The raw nickname is an anonymous flex item in RC2, which cannot render an
+   ellipsis. Keep the row block-based and independently anchor its status dot. */
+#chat .userlist .user:has(> .status-icon) {
+  padding-right: 30px;
+}
+
+#chat .userlist .user > .status-icon {
+  margin: 0;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 #chat .userlist .user:not([class*="color-"]) {
@@ -1376,6 +1406,7 @@ textarea:focus {
     flex: none;
     grid-area: from;
     line-height: var(--message-line-height);
+    max-width: 55vw;
     overflow: hidden;
     padding: 0;
     text-align: left;
