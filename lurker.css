@@ -42,7 +42,7 @@
   --font-weight-user: 400;
   --message-line-height: 1.55;
   --member-line-height: 1.55;
-  --channel-line-height: 1.4;
+  --channel-line-height: 1.6;
   --composer-line-height: 22px;
 }
 
@@ -340,15 +340,15 @@ a:hover {
 }
 
 #chat .msg:not([data-type="condensed"]) {
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 /* A condensed block contains a summary followed by nested message rows. Keep
    the shared gutter on the outer block so both levels use the same columns. */
 #chat .msg[data-type="condensed"] {
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 #chat .msg[data-type="condensed"] > .condensed-summary {
@@ -985,9 +985,22 @@ textarea:focus {
   #chat button.close,
   #viewport .lt,
   #viewport .rt {
+    align-items: center;
     height: 44px;
+    justify-content: center;
     min-width: 36px;
+    padding: 0;
     width: 36px;
+  }
+
+  #viewport .lt::before,
+  #viewport .rt::before,
+  #chat button.menu::before,
+  #chat button.mentions::before,
+  #chat button.search::before,
+  #chat button.close::before {
+    line-height: 1;
+    width: auto;
   }
 
   #chat .header .title {
@@ -1016,28 +1029,43 @@ textarea:focus {
     padding: 4px 0 14px;
   }
 
-  /* Lurker's mobile layout is a compact two-row cluster: nick + time in the
-     head, followed by the message body. Reset the desktop fixed columns. */
+  /* Lurker's compact event row is prefix/icon + content + trailing time.
+     Conversational rows override this below with their two-row head/body. */
   #chat .msg:not([data-type="condensed"]) {
     align-items: baseline;
     display: grid;
-    grid-template-areas:
-      "from time"
-      "content content";
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "from content time";
+    grid-template-columns: auto minmax(0, 1fr) auto;
     margin-top: 10px;
     padding: 2px 8px;
+  }
+
+  /* Lurker keeps conversational timestamps beside the nick instead of using
+     the flexible track to pin them to the right edge. Event rows retain the
+     trailing timestamp, which is useful when their prefix is only an icon. */
+  #chat .msg[data-type="message"],
+  #chat .msg[data-type="notice"] {
+    grid-template-areas:
+      "from time spacer"
+      "content content content";
+    grid-template-columns: minmax(0, max-content) auto minmax(0, 1fr);
   }
 
   #chat .msg:not([data-type="condensed"]) > .time {
     display: block;
     flex: none;
-    font-size: 0.85em;
+    font-size: 1em;
     grid-area: time;
     line-height: var(--message-line-height);
     padding: 0;
     text-align: right;
     width: auto;
+  }
+
+  #chat .msg[data-type="message"] > .time,
+  #chat .msg[data-type="notice"] > .time {
+    padding-left: 0.75ch;
+    text-align: left;
   }
 
   #chat .msg:not([data-type="condensed"]) > .from {
@@ -1125,4 +1153,55 @@ textarea:focus {
   #chat .userlist {
     width: 88vw;
   }
+}
+
+/* --- Input Colors ------------------------------------------------- */
+
+#chat .msg[data-type=invite] .from:before {
+    color: var(--body-color-muted) !important;
+    font-size: 9pt;
+}
+
+#chat .msg[data-type=login] .from:before {
+    color: var(--body-color-muted) !important;
+    font-size: 9pt;
+}
+
+#chat .msg[data-type=logout] .from:before {
+    color: var(--body-color-muted) !important;
+    font-size: 9pt;
+}
+
+#chat .msg[data-type=part] .from:before,#chat .msg[data-type=quit] .from:before {
+    color: var(--body-color-muted) !important;
+    font-size: 9pt;
+}
+
+#chat .msg[data-type=topic] .from:before {
+    color: var(--body-color-muted) !important;
+    font-size: 9pt;
+}
+
+#chat .msg[data-type=mode] .from:before,#chat .msg[data-type=mode_channel] .from:before,#chat .msg[data-type=mode_user] .from:before {
+    color: var(--body-color-muted);
+    font-size: 9pt;
+}
+
+#chat .msg[data-type=join] .from:before {
+    color: var(--body-color-muted) !important;
+    font-size: 9pt;
+}
+
+#chat .msg[data-type=whois] .from:before, #chat .msg[data-type=chghost] .from:before, #chat .msg[data-type=nick] .from:before {
+    color: var(--body-color-muted) !important;
+    font-size: 9pt;
+}
+
+#chat .msg[data-command=motd] .from:before {
+    color: var(--body-color-muted) !important;
+    font-size: 9pt;
+}
+
+#chat .msg[data-type="action"] .from::before {
+    font-size: 9pt;
 }
