@@ -255,8 +255,8 @@ a:hover {
 #footer {
   background: var(--lurker-bg);
   border-top: 1px solid var(--lurker-border);
-  height: 45px;
-  min-height: 45px;
+  height: 37px;
+  min-height: 37px;
 }
 
 #footer .icon,
@@ -279,7 +279,7 @@ a:hover {
   border: 0 !important;
   box-shadow: none !important;
   color: var(--lurker-fg);
-  height: 50px;
+  height: 38px;
   line-height: 1.55;
   outline: 0;
   padding: 0 8px;
@@ -794,8 +794,8 @@ pre,
   border: 0;
   border-top: 1px solid var(--lurker-border);
   border-radius: 0;
-  min-height: 45px;
-  padding: 11px 12px;
+  min-height: 37px;
+  padding: 7px 12px;
 }
 
 #windows #form .input,
@@ -912,10 +912,21 @@ form.message-search input {
   color: var(--lurker-fg) !important;
   color-scheme: dark;
   letter-spacing: -0.5px;
+  height: 25px;
 }
 
 .jump-to-input {
-  display: block;
+  margin: 6px 8px 3px 8px;
+  position: relative;
+}
+
+/* Core pins this icon to a 35px line box. Center it geometrically so a
+   compact jump input (currently 25px) does not push the glyph downward. */
+.jump-to-input::before {
+  bottom: auto;
+  line-height: 1 !important;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* Channel filtering replaces .networks with a standalone result list, so it
@@ -1215,8 +1226,8 @@ textarea:focus {
     background-color: var(--lurker-bg) !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
-    height: 48px;
-    min-height: 48px;
+    height: 38px;
+    min-height: 38px;
     padding: 0 6px;
   }
 
@@ -1368,9 +1379,9 @@ textarea:focus {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
     min-width: 0;
-    padding: 8px;
+    padding: 7px 6px;
     padding-right: max(6px, env(safe-area-inset-right, 0px));
-    padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(7px + env(safe-area-inset-bottom, 0px));
     padding-left: max(6px, env(safe-area-inset-left, 0px));
   }
 
