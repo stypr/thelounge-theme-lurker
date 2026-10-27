@@ -17,7 +17,9 @@
   --lurker-bad: #ed6c89;
   --lurker-orange: #fc9867;
   --lurker-cyan: #78dce8;
-  --lurker-border: #2c2a2e;
+  /* Slightly brighter than the panel fill so 1px separators remain visible
+     without reading as black rules on Safari/retina displays. */
+  --lurker-border: #353237;
 
   /* Map Lurker's tokens onto The Lounge's public theme variables. */
   --body-color: var(--lurker-fg);
@@ -172,6 +174,9 @@ a:hover {
   padding-left: 30px;
 }
 
+#sidebar .network {
+  margin-bottom: 0;
+}
 #sidebar .network .collapse-network {
   padding-left: 8px;
   width: 28px;
@@ -249,6 +254,8 @@ a:hover {
 #footer {
   background: var(--lurker-bg);
   border-top: 1px solid var(--lurker-border);
+  height: 45px;
+  min-height: 45px;
 }
 
 #footer .icon,
@@ -268,9 +275,10 @@ a:hover {
 .header,
 #chat .header {
   background: var(--lurker-bg);
-  border-bottom: 1px solid var(--lurker-border);
+  border-bottom: 0;
+  box-shadow: inset 0 -1px 0 var(--lurker-border);
   color: var(--lurker-fg);
-  height: 38px;
+  height: 50px;
   line-height: 1.55;
   padding: 0 8px;
 }
@@ -292,6 +300,13 @@ a:hover {
   color: var(--lurker-muted);
   font-size: var(--font-size);
   font-weight: 400;
+}
+
+/* The header owns the topic/messages divider. Prevent an adjacent chat edge
+   from turning the single inset rule into a two-line separator. */
+#chat .chat-content {
+  border-top: 0 !important;
+  box-shadow: none;
 }
 
 #chat button.menu,
@@ -589,7 +604,7 @@ pre,
 
 #chat .userlist .search {
   background: var(--lurker-bg);
-  border-bottom: 1px solid var(--lurker-border);
+  border-bottom: 0;
   color: var(--lurker-fg);
 }
 
@@ -612,6 +627,66 @@ pre,
 #chat .userlist .search::placeholder,
 #chat .count::before {
   color: var(--lurker-muted) !important;
+}
+
+/* Core positions this icon with a 45px line box. Our member-search header is
+   38px, so center it geometrically instead of relying on text baselines. */
+#chat .userlist .count::before {
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  height: auto;
+  justify-content: center;
+  line-height: 1 !important;
+  pointer-events: none;
+  right: 8px;
+  top: 0;
+  width: 18px;
+}
+
+/* WebKit paints the clear control of <input type="search"> with the system
+   accent color. Replace only its artwork; the native click-to-clear behavior
+   and input event are preserved. */
+#chat .userlist .search[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  background:
+    linear-gradient(
+      45deg,
+      transparent 42%,
+      var(--lurker-muted) 42% 58%,
+      transparent 58%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 42%,
+      var(--lurker-muted) 42% 58%,
+      transparent 58%
+    );
+  cursor: pointer;
+  height: 12px;
+  margin-right: 8px;
+  opacity: 0.9;
+  transform: translateY(-1px);
+  vertical-align: middle;
+  width: 12px;
+}
+
+#chat .userlist .search[type="search"]::-webkit-search-cancel-button:hover {
+  background:
+    linear-gradient(
+      45deg,
+      transparent 42%,
+      var(--lurker-accent) 42% 58%,
+      transparent 58%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 42%,
+      var(--lurker-accent) 42% 58%,
+      transparent 58%
+    );
+  opacity: 1;
 }
 
 #chat .userlist .user {
@@ -715,7 +790,8 @@ pre,
   border: 0;
   border-top: 1px solid var(--lurker-border);
   border-radius: 0;
-  padding: 8px 12px;
+  min-height: 45px;
+  padding: 11px 12px;
 }
 
 #windows #form .input,
@@ -821,7 +897,153 @@ form.message-search input {
 }
 
 .jump-to-input .input {
+  background-color: var(--lurker-bg-soft) !important;
+  color: var(--lurker-fg) !important;
+  color-scheme: dark;
   letter-spacing: -0.5px;
+}
+
+.jump-to-input {
+  display: block;
+}
+
+/* Channel filtering replaces .networks with a standalone result list, so it
+   cannot inherit the ordinary network/channel tree presentation. */
+#sidebar .jump-to-results {
+  background: var(--lurker-bg);
+  color: var(--lurker-fg);
+}
+
+#sidebar .jump-to-results .no-results {
+  color: var(--lurker-muted);
+  font-size: var(--font-size-channel-list);
+}
+
+#sidebar .jump-to-results .channel-list-item {
+  background: transparent;
+  border-left: 2px solid transparent;
+  color: var(--lurker-fg);
+  font-size: var(--font-size-channel-list);
+  line-height: var(--channel-line-height);
+  min-height: 0;
+  padding-bottom: 1px;
+  padding-top: 1px;
+}
+
+#sidebar .jump-to-results .channel-list-item:hover,
+#sidebar .jump-to-results .channel-list-item:focus,
+#sidebar .jump-to-results .channel-list-item.active {
+  background: var(--lurker-bg-soft);
+  color: var(--lurker-fg);
+}
+
+#sidebar .jump-to-results .channel-list-item.active {
+  border-left-color: var(--lurker-accent);
+}
+
+#sidebar .jump-to-results .channel-list-item[data-type="lobby"] {
+  color: var(--lurker-fg) !important;
+  font-size: 14px !important;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  padding: 4px 8px 4px 0 !important;
+  text-transform: uppercase;
+}
+
+#sidebar .jump-to-results .channel-list-item[data-type="lobby"]::before {
+  align-self: center;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--lurker-muted);
+  content: "" !important;
+  display: block;
+  flex: 0 0 auto;
+  height: 0;
+  margin-left: 8px;
+  margin-right: 12px;
+  width: 0;
+}
+
+#sidebar .jump-to-results .channel-list-item:not([data-type="lobby"])::before {
+  border-bottom: 1px solid var(--lurker-border);
+  border-left: 1px solid var(--lurker-border);
+  color: transparent;
+  content: "" !important;
+  height: 50%;
+  left: 15px;
+  margin: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 8px;
+}
+
+#sidebar .jump-to-results .channel-list-item .name {
+  color: inherit;
+  margin-right: 5px;
+}
+
+#sidebar .jump-to-results .channel-list-item .badge,
+#sidebar .jump-to-results .channel-list-item .highlight {
+  align-self: center;
+  line-height: var(--channel-line-height);
+  margin: 0;
+}
+
+#sidebar .jump-to-results .not-secure-tooltip,
+#sidebar .jump-to-results .not-connected-tooltip,
+#sidebar .jump-to-results .parted-channel-tooltip {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+#sidebar .jump-to-results .not-secure-icon::before,
+#sidebar .jump-to-results .not-connected-icon::before,
+#sidebar .jump-to-results .parted-channel-icon::before {
+  line-height: 1;
+}
+
+#sidebar .jump-to-results .collapse-network {
+  display: none;
+}
+
+/* Message search uses a separate route and an absolutely positioned input
+   wrapper. Theme those surfaces explicitly instead of relying on chat view
+   inheritance. */
+form.message-search .input-wrapper,
+#chat .chat-view[data-type="search-results"],
+#chat .chat-view[data-type="search-results"] .chat-content,
+#chat .chat-view[data-type="search-results"] .chat,
+#chat .chat-view[data-type="search-results"] .messages {
+  background: var(--lurker-bg) !important;
+  color: var(--lurker-fg);
+}
+
+form.message-search .input-wrapper {
+  border-bottom: 1px solid var(--lurker-border);
+}
+
+form.message-search input.input {
+  background: var(--lurker-bg-soft) !important;
+  color: var(--lurker-fg) !important;
+  color-scheme: dark;
+}
+
+#chat .chat-view[data-type="search-results"] .search-status {
+  color: var(--lurker-muted);
+}
+
+#chat .chat-view[data-type="search-results"] .result {
+  background: transparent;
+  cursor: pointer;
+}
+
+#chat .chat-view[data-type="search-results"] .result:hover .msg,
+#chat .chat-view[data-type="search-results"] .result:focus-within .msg {
+  background: var(--lurker-bg-soft);
 }
 
 /* Core styles use a dark placeholder on several non-settings fields. Keep
