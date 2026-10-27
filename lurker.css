@@ -484,6 +484,10 @@ a:hover {
   border-left: 0 !important;
 }
 
+#chat .chat-view[data-type=channel] .msg.highlight .time {
+  padding-left: 0 !important;
+}
+
 #chat .chat-view[data-type="channel"] .msg.highlight .content,
 #chat .chat-view[data-type="channel"] .msg.highlight .text {
   color: var(--lurker-fg);
