@@ -235,8 +235,10 @@ a:hover {
   border-radius: 0;
   color: var(--lurker-warn);
   font-size: 12px;
-  padding: 1px 2px;
+  padding: 2px 2px 0px 2px;
   margin-top: 2px;
+  margin-bottom: 4px;
+  margin-right: 3px;
 }
 
 .channel-list-item.unread:not(.highlight) .name,
@@ -482,10 +484,6 @@ a:hover {
 #chat .chat-view[data-type="channel"] .msg.highlight {
   background: rgba(249, 217, 120, 0.12) !important;
   border-left: 0 !important;
-}
-
-#chat .chat-view[data-type=channel] .msg.highlight .time {
-  padding-left: 0 !important;
 }
 
 #chat .chat-view[data-type="channel"] .msg.highlight .content,
