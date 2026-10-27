@@ -239,6 +239,10 @@ a:hover {
   color: var(--lurker-muted);
 }
 
+.channel-list-item[data-type=lobby] .add-channel:before {
+  margin-top: 2px;
+}
+
 /* Lurker draws its tree from connected borders rather than box-drawing glyphs.
    Splitting the spine at each row's midpoint keeps every branch continuous. */
 #sidebar .channels > .channel-list-item:not([data-type="lobby"])::before {
@@ -271,14 +275,14 @@ a:hover {
 
 .channel-list-item .badge,
 .channel-list-item .highlight {
-  background: transparent;
-  border-radius: 0;
-  color: var(--lurker-warn);
-  font-size: 12px;
-  padding: 2px 2px 0px 2px;
-  margin-top: 3px;
-  margin-bottom: 4px;
-  margin-right: 3px;
+    background: transparent !important;
+    border-radius: 0;
+    color: var(--lurker-accent) !important;
+    font-size: 12px;
+    padding: 2px 2px 2px 2px;
+    margin-top: 3px;
+    margin-bottom: 1px;
+    margin-right: 3px;
 }
 
 .channel-list-item.unread:not(.highlight) .name,
@@ -563,13 +567,13 @@ a:hover {
 
 #chat .unread-marker::before {
   border: 0;
-  border-top: 1px dashed var(--body-color-muted);
+  border-top: 1px dashed var(--lurker-warn);
   opacity: 0.6;
 }
 
 #chat .unread-marker-text::before {
   background: var(--lurker-bg);
-  color: var(--lurker-accent);
+  color: var(--lurker-warn);
   padding: 0 8px;
 }
 
@@ -1548,10 +1552,63 @@ textarea:focus {
   font-size: 9pt;
 }
 
-#chat .msg[data-type="action"] .from::before {
+#chat .msg[data-type=action] .from::before {
+  font-size: 9pt;
+}
+
+#chat .msg[data-type=ctcp] .from::before {
   font-size: 9pt;
 }
 
 .channel-list-item .close:before {
   margin-top: 2px;
+}
+
+/* --- 4.6.0-rc ------------------------------------------------- */
+
+.status-icon>.status-online:after {
+  background-color: var(--lurker-good);
+}
+
+.status-icon>.status-offline:after {
+  background-color: var(--lurker-bad);
+}
+
+.channel-list-item[aria-label^="query:"] .status-icon {
+  display: contents;
+}
+
+.channel-list-item[aria-label^="query:"] .status-icon .status-online,
+.channel-list-item[aria-label^="query:"] .status-icon .status-offline {
+  padding-right: 5px;
+  margin-top: -2px;
+}
+
+.channel-list-item[aria-label^="query:"] .badge,
+.channel-list-item[aria-label^="query:"] .highlight {
+  color: var(--lurker-warn) !important;
+}
+
+#viewport .lt:after {
+  top: 6px;
+  right: 2px;
+}
+
+#form .reply-bar {
+  background: transparent;
+  border-bottom: 0;
+  padding: 0 0 10px 0;
+}
+
+#chat .msg .reply-context {
+  padding: 0;
+  margin-bottom: unset;
+}
+
+#chat .msg .msg-actions {
+  background: var(--lurker-bg);
+  border: 1px solid var(--lurker-border);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  color: var(--lurker-fg);
+  border-radius: 0;
 }
