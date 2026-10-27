@@ -26,6 +26,7 @@
   --body-color-muted: var(--lurker-muted);
   --body-bg-color: var(--lurker-bg);
   --window-bg-color: var(--lurker-bg);
+  --form-bg-color: var(--lurker-bg);
   --window-heading-color: var(--lurker-muted);
   --button-color: var(--lurker-accent);
   --button-text-color-hover: var(--lurker-fg);
@@ -275,11 +276,12 @@ a:hover {
 .header,
 #chat .header {
   background: var(--lurker-bg);
-  border-bottom: 0;
-  box-shadow: inset 0 -1px 0 var(--lurker-border);
+  border: 0 !important;
+  box-shadow: none !important;
   color: var(--lurker-fg);
   height: 50px;
   line-height: 1.55;
+  outline: 0;
   padding: 0 8px;
 }
 
@@ -302,11 +304,13 @@ a:hover {
   font-weight: 400;
 }
 
-/* The header owns the topic/messages divider. Prevent an adjacent chat edge
-   from turning the single inset rule into a two-line separator. */
+/* Keep the separator on one box only. The header and message list paint no
+   edge, while chat-content supplies the single Lurker-style divider. */
 #chat .chat-content {
-  border-top: 0 !important;
-  box-shadow: none;
+  border: 0 !important;
+  border-top: 1px solid var(--lurker-border) !important;
+  box-shadow: none !important;
+  outline: 0;
 }
 
 #chat button.menu,
@@ -341,7 +345,7 @@ a:hover {
 }
 
 #chat .messages {
-  padding: 4px 0;
+  padding: 0 0 4px;
 }
 
 #chat .msg,
@@ -818,6 +822,13 @@ pre,
   outline: none;
 }
 
+/* Recent Lounge builds reserve a line below the composer for typing status,
+   even when there is no status text. Do not let that empty row lift the chat
+   edge above the sidebar footer. */
+#chat-container > .typing-indicator:empty {
+  display: none;
+}
+
 #form #nick {
   background: transparent;
   color: var(--lurker-accent);
@@ -1023,7 +1034,8 @@ form.message-search .input-wrapper,
 }
 
 form.message-search .input-wrapper {
-  border-bottom: 1px solid var(--lurker-border);
+  /* border-bottom: 1px solid var(--lurker-border); */
+  border-bottom: 0 !important;
 }
 
 form.message-search input.input {
@@ -1255,7 +1267,7 @@ textarea:focus {
   }
 
   #chat .messages {
-    padding: 4px 0 14px;
+    padding: 0 0 14px;
   }
 
   /* Lurker's compact event row is prefix/icon + content + trailing time.
@@ -1422,7 +1434,7 @@ textarea:focus {
 
 @media (max-width: 479px) {
   #chat .messages {
-    padding: 4px 0;
+    padding: 0;
   }
 
   #sidebar,
