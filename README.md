@@ -1,4 +1,4 @@
-# Lurker theme for The Lounge
+# Lurker theme for thelounge
 
 Monokai Plus theme based on <a href="https://github.com/amiantos/lurker">Lurker's default theme</a>
 
