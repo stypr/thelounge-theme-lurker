@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "main": "package.json",
   "homepage": "https://github.com/stypr/thelounge-theme-lurker",
+  "description": "Lurker theme for thelounge",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stypr/thelounge-theme-lurker.git"
