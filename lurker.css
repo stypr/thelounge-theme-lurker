@@ -5,7 +5,17 @@
  * selectors remain native to The Lounge. No Lurker assets are copied.
  */
 
-:root {
+.window .logo,
+#loading .logo {
+	display: none;
+}
+
+.window .logo-inverted,
+#loading .logo-inverted {
+	display: inline-block;
+}
+
+ :root {
   /* Lurker's default Monokai Pro-inspired palette. */
   --lurker-bg: #212022;
   --lurker-bg-soft: #2c2a2e;
@@ -1631,6 +1641,11 @@ textarea:focus {
 
 /* --- Input Colors ------------------------------------------------- */
 
+#chat .msg[data-type=error] .from:before {
+  color: var(--body-color-muted) !important;
+  font-size: 9pt;
+}
+
 #chat .msg[data-type=invite] .from:before {
   color: var(--body-color-muted) !important;
   font-size: 9pt;
@@ -1654,7 +1669,7 @@ textarea:focus {
 
 #chat .msg[data-type=topic] .from:before {
   color: var(--body-color-muted) !important;
-  font-size: 9pt;
+  font-size: 8pt;
 }
 
 #chat .msg[data-type=mode] .from:before,
@@ -1678,6 +1693,11 @@ textarea:focus {
 
 #chat .msg[data-command=motd] .from:before {
   color: var(--body-color-muted) !important;
+  font-size: 9pt;
+  padding-right: 1px;
+}
+
+#chat .msg[data-type=plugin] .from:before {
   font-size: 9pt;
 }
 
