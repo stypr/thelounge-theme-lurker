@@ -975,6 +975,7 @@ pre,
   border-top: 1px solid var(--lurker-border);
   border-radius: 0;
   min-height: 37px;
+  order: 2;
   padding: 7px 12px;
 }
 
@@ -1002,11 +1003,25 @@ pre,
   outline: none;
 }
 
-/* Recent Lounge builds reserve a line below the composer for typing status,
-   even when there is no status text. Do not let that empty row lift the chat
-   edge above the sidebar footer. */
+/* RC2 inserts typing status after the form. Reorder it above the composer so
+   the 37px form remains pinned to—and aligned with—the sidebar footer. */
+#chat-container>.typing-indicator {
+  background: var(--lurker-bg);
+  border-top: 1px solid var(--lurker-border);
+  color: var(--lurker-muted);
+  min-height: 0;
+  order: 1;
+  padding: 2px 12px 3px;
+}
+
 #chat-container>.typing-indicator:empty {
   display: none;
+}
+
+/* When status is visible, it owns the chat/composer separator; avoid drawing
+   a second rule immediately between the indicator and textarea. */
+#chat-container:has(>.typing-indicator:not(:empty))>#form {
+  border-top-color: transparent;
 }
 
 #form #nick {
