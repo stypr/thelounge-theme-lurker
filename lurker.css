@@ -170,7 +170,7 @@ a:hover {
   padding-top: 4px;
 }
 
-.network + .network {
+.network+.network {
   border-top: 1px solid var(--lurker-border);
   margin-top: 4px;
 }
@@ -212,6 +212,7 @@ a:hover {
 #sidebar .network {
   margin-bottom: 0;
 }
+
 #sidebar .network .collapse-network {
   padding-left: 8px;
   width: 28px;
@@ -245,7 +246,7 @@ a:hover {
 
 /* Lurker draws its tree from connected borders rather than box-drawing glyphs.
    Splitting the spine at each row's midpoint keeps every branch continuous. */
-#sidebar .channels > .channel-list-item:not([data-type="lobby"])::before {
+#sidebar .channels>.channel-list-item:not([data-type="lobby"])::before {
   border-bottom: 1px solid var(--lurker-border);
   border-left: 1px solid var(--lurker-border);
   content: "";
@@ -258,7 +259,7 @@ a:hover {
   width: 8px;
 }
 
-#sidebar .channels > .channel-list-item:not([data-type="lobby"]):not(:last-child)::after {
+#sidebar .channels>.channel-list-item:not([data-type="lobby"]):not(:last-child)::after {
   border-left: 1px solid var(--lurker-border);
   bottom: 0;
   content: "";
@@ -275,18 +276,18 @@ a:hover {
 
 .channel-list-item .badge,
 .channel-list-item .highlight {
-    background: transparent !important;
-    border-radius: 0;
-    color: var(--lurker-accent) !important;
-    font-size: 12px;
-    padding: 2px 2px 2px 2px;
-    margin-top: 3px;
-    margin-bottom: 1px;
-    margin-right: 3px;
+  background: transparent !important;
+  border-radius: 0;
+  color: var(--lurker-accent) !important;
+  font-size: 12px;
+  padding: 2px 2px 2px 2px;
+  margin-top: 3px;
+  margin-bottom: 1px;
+  margin-right: 3px;
 }
 
 .channel-list-item .highlight {
-    color: var(--lurker-warn) !important;
+  color: var(--lurker-warn) !important;
 }
 
 .channel-list-item.has-unread:not(.has-highlight) .name,
@@ -420,13 +421,13 @@ a:hover {
   padding-right: 12px;
 }
 
-#chat .msg[data-type="condensed"] > .condensed-summary {
+#chat .msg[data-type="condensed"]>.condensed-summary {
   align-items: baseline;
   flex: 0 0 100%;
   min-width: 0;
 }
 
-#chat .msg[data-type="condensed"] > .msg {
+#chat .msg[data-type="condensed"]>.msg {
   padding-left: 0;
   padding-right: 0;
 }
@@ -548,19 +549,24 @@ a:hover {
   color: var(--lurker-bad) !important;
 }
 
-#chat .chat-view[data-type="channel"] .msg.highlight {
+#chat .chat-view[data-type="channel"] .msg.highlight,
+#chat .chat-view[data-type="message"] .msg.highlight {
   background: rgba(249, 217, 120, 0.12) !important;
   border-left: 0 !important;
 }
 
-#chat .chat-view[data-type=channel] .msg.highlight .time {
+#chat .chat-view[data-type="channel"] .msg.highlight .time,
+#chat .chat-view[data-type="message"] .msg.highlight .time {
   padding-left: 0 !important;
 }
 
 #chat .chat-view[data-type="channel"] .msg.highlight .content,
-#chat .chat-view[data-type="channel"] .msg.highlight .text {
+#chat .chat-view[data-type="channel"] .msg.highlight .text,
+#chat .chat-view[data-type="message"] .msg.highlight .content,
+#chat .chat-view[data-type="message"] .msg.highlight .text {
   color: var(--lurker-fg);
   font-weight: 400;
+  background: unset;
 }
 
 #chat .unread-marker,
@@ -600,38 +606,133 @@ a:hover {
 
 /* Lurker's dark nick palette. The Lounge hashes into 32 slots while Lurker
    hashes into 19, so slots 20-32 intentionally repeat the first 13 hues. */
-.user.color-1 { color: #ff6188; }
-.user.color-2 { color: #fc9867; }
-.user.color-3 { color: #ffd866; }
-.user.color-4 { color: #a9dc76; }
-.user.color-5 { color: #78dce8; }
-.user.color-6 { color: #ab9df2; }
-.user.color-7 { color: #ed6c89; }
-.user.color-8 { color: #d4996e; }
-.user.color-9 { color: #f9d978; }
-.user.color-10 { color: #b3db82; }
-.user.color-11 { color: #91dae6; }
-.user.color-12 { color: #a99dec; }
-.user.color-13 { color: #ff7494; }
-.user.color-14 { color: #ffaf75; }
-.user.color-15 { color: #c4e29a; }
-.user.color-16 { color: #a0f1ff; }
-.user.color-17 { color: #b6aaff; }
-.user.color-18 { color: #7ba4ff; }
-.user.color-19 { color: #6799f3; }
-.user.color-20 { color: #ff6188; }
-.user.color-21 { color: #fc9867; }
-.user.color-22 { color: #ffd866; }
-.user.color-23 { color: #a9dc76; }
-.user.color-24 { color: #78dce8; }
-.user.color-25 { color: #ab9df2; }
-.user.color-26 { color: #ed6c89; }
-.user.color-27 { color: #d4996e; }
-.user.color-28 { color: #f9d978; }
-.user.color-29 { color: #b3db82; }
-.user.color-30 { color: #91dae6; }
-.user.color-31 { color: #a99dec; }
-.user.color-32 { color: #ff7494; }
+.user.color-1 {
+  color: #ff6188;
+}
+
+.user.color-2 {
+  color: #fc9867;
+}
+
+.user.color-3 {
+  color: #ffd866;
+}
+
+.user.color-4 {
+  color: #a9dc76;
+}
+
+.user.color-5 {
+  color: #78dce8;
+}
+
+.user.color-6 {
+  color: #ab9df2;
+}
+
+.user.color-7 {
+  color: #ed6c89;
+}
+
+.user.color-8 {
+  color: #d4996e;
+}
+
+.user.color-9 {
+  color: #f9d978;
+}
+
+.user.color-10 {
+  color: #b3db82;
+}
+
+.user.color-11 {
+  color: #91dae6;
+}
+
+.user.color-12 {
+  color: #a99dec;
+}
+
+.user.color-13 {
+  color: #ff7494;
+}
+
+.user.color-14 {
+  color: #ffaf75;
+}
+
+.user.color-15 {
+  color: #c4e29a;
+}
+
+.user.color-16 {
+  color: #a0f1ff;
+}
+
+.user.color-17 {
+  color: #b6aaff;
+}
+
+.user.color-18 {
+  color: #7ba4ff;
+}
+
+.user.color-19 {
+  color: #6799f3;
+}
+
+.user.color-20 {
+  color: #ff6188;
+}
+
+.user.color-21 {
+  color: #fc9867;
+}
+
+.user.color-22 {
+  color: #ffd866;
+}
+
+.user.color-23 {
+  color: #a9dc76;
+}
+
+.user.color-24 {
+  color: #78dce8;
+}
+
+.user.color-25 {
+  color: #ab9df2;
+}
+
+.user.color-26 {
+  color: #ed6c89;
+}
+
+.user.color-27 {
+  color: #d4996e;
+}
+
+.user.color-28 {
+  color: #f9d978;
+}
+
+.user.color-29 {
+  color: #b3db82;
+}
+
+.user.color-30 {
+  color: #91dae6;
+}
+
+.user.color-31 {
+  color: #a99dec;
+}
+
+.user.color-32 {
+  color: #ff7494;
+}
 
 #chat .toggle-content {
   background: var(--lurker-bg-soft);
@@ -711,18 +812,14 @@ pre,
   -webkit-appearance: none;
   appearance: none;
   background:
-    linear-gradient(
-      45deg,
+    linear-gradient(45deg,
       transparent 42%,
       var(--lurker-muted) 42% 58%,
-      transparent 58%
-    ),
-    linear-gradient(
-      -45deg,
+      transparent 58%),
+    linear-gradient(-45deg,
       transparent 42%,
       var(--lurker-muted) 42% 58%,
-      transparent 58%
-    );
+      transparent 58%);
   cursor: pointer;
   height: 12px;
   margin-right: 8px;
@@ -734,18 +831,14 @@ pre,
 
 #chat .userlist .search[type="search"]::-webkit-search-cancel-button:hover {
   background:
-    linear-gradient(
-      45deg,
+    linear-gradient(45deg,
       transparent 42%,
       var(--lurker-accent) 42% 58%,
-      transparent 58%
-    ),
-    linear-gradient(
-      -45deg,
+      transparent 58%),
+    linear-gradient(-45deg,
       transparent 42%,
       var(--lurker-accent) 42% 58%,
-      transparent 58%
-    );
+      transparent 58%);
   opacity: 1;
 }
 
@@ -770,7 +863,7 @@ pre,
   padding-right: 30px;
 }
 
-#chat .userlist .user > .status-icon {
+#chat .userlist .user>.status-icon {
   margin: 0;
   position: absolute;
   right: 10px;
@@ -902,7 +995,7 @@ pre,
 /* Recent Lounge builds reserve a line below the composer for typing status,
    even when there is no status text. Do not let that empty row lift the chat
    edge above the sidebar footer. */
-#chat-container > .typing-indicator:empty {
+#chat-container>.typing-indicator:empty {
   display: none;
 }
 
@@ -1384,7 +1477,7 @@ textarea:focus {
     grid-template-columns: minmax(0, max-content) auto minmax(0, 1fr);
   }
 
-  #chat .msg:not([data-type="condensed"]) > .time {
+  #chat .msg:not([data-type="condensed"])>.time {
     display: block;
     flex: none;
     font-size: 1em;
@@ -1395,13 +1488,13 @@ textarea:focus {
     width: auto;
   }
 
-  #chat .msg[data-type="message"] > .time,
-  #chat .msg[data-type="notice"] > .time {
+  #chat .msg[data-type="message"]>.time,
+  #chat .msg[data-type="notice"]>.time {
     padding-left: 0.75ch;
     text-align: left;
   }
 
-  #chat .msg:not([data-type="condensed"]) > .from {
+  #chat .msg:not([data-type="condensed"])>.from {
     display: block;
     flex: none;
     grid-area: from;
@@ -1414,7 +1507,7 @@ textarea:focus {
     width: auto;
   }
 
-  #chat .msg:not([data-type="condensed"]) > .content {
+  #chat .msg:not([data-type="condensed"])>.content {
     border: 0;
     display: block;
     grid-area: content;
@@ -1429,22 +1522,22 @@ textarea:focus {
     padding: 2px 8px;
   }
 
-  #chat .msg[data-type="condensed"] > .condensed-summary {
+  #chat .msg[data-type="condensed"]>.condensed-summary {
     display: block;
   }
 
-  #chat .condensed-summary > .time,
-  #chat .condensed-summary > .from {
+  #chat .condensed-summary>.time,
+  #chat .condensed-summary>.from {
     display: none;
   }
 
-  #chat .msg[data-type="condensed"] > .condensed-summary > .content {
+  #chat .msg[data-type="condensed"]>.condensed-summary>.content {
     border: 0;
     display: block;
     padding: 0;
   }
 
-  #chat .msg[data-type="condensed"] > .msg {
+  #chat .msg[data-type="condensed"]>.msg {
     margin-top: 4px;
     padding-left: 0;
     padding-right: 0;
@@ -1553,7 +1646,8 @@ textarea:focus {
   font-size: 9pt;
 }
 
-#chat .msg[data-type=part] .from:before,#chat .msg[data-type=quit] .from:before {
+#chat .msg[data-type=part] .from:before,
+#chat .msg[data-type=quit] .from:before {
   color: var(--body-color-muted) !important;
   font-size: 9pt;
 }
@@ -1563,7 +1657,9 @@ textarea:focus {
   font-size: 9pt;
 }
 
-#chat .msg[data-type=mode] .from:before,#chat .msg[data-type=mode_channel] .from:before,#chat .msg[data-type=mode_user] .from:before {
+#chat .msg[data-type=mode] .from:before,
+#chat .msg[data-type=mode_channel] .from:before,
+#chat .msg[data-type=mode_user] .from:before {
   color: var(--body-color-muted);
   font-size: 9pt;
 }
@@ -1573,7 +1669,9 @@ textarea:focus {
   font-size: 9pt;
 }
 
-#chat .msg[data-type=whois] .from:before, #chat .msg[data-type=chghost] .from:before, #chat .msg[data-type=nick] .from:before {
+#chat .msg[data-type=whois] .from:before,
+#chat .msg[data-type=chghost] .from:before,
+#chat .msg[data-type=nick] .from:before {
   color: var(--body-color-muted) !important;
   font-size: 9pt;
 }
@@ -1642,4 +1740,41 @@ textarea:focus {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
   color: var(--lurker-fg);
   border-radius: 0;
+}
+
+@media screen and (width >=1088px) {
+  .settings-menu {
+    top: 38px;
+    left: 195px;
+    background-color: #f7f8f9;
+    background-color: color-mix(in srgb, var(--body-bg-color) 6%, var(--window-bg-color));
+    border: 1px solid #edeef0;
+    border-color: color-mix(in srgb, var(--body-color) 8%, var(--window-bg-color));
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 10px 20px 16px;
+  }
+
+  .settings-menu h2 {
+    color: var(--body-color-muted);
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    border-bottom: none;
+    margin: 0 0 4px;
+    padding: 0;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .settings-menu ul {
+    margin: 20px 0 0 0;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .settings-menu li {
+    margin: 0;
+    padding: 0;
+    font-size: 11pt;
+  }
 }
