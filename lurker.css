@@ -1240,8 +1240,13 @@ form.message-search .input-wrapper,
 }
 
 form.message-search .input-wrapper {
-  /* border-bottom: 1px solid var(--lurker-border); */
-  border-bottom: 0 !important;
+  z-index: 2;
+  border-bottom: 0;
+  top: 39px;
+}
+
+form.message-search.opened .input-wrapper {
+  border-bottom: 1px solid var(--lurker-border) !important;
 }
 
 form.message-search input.input {
