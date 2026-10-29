@@ -175,6 +175,10 @@ a:hover {
   padding-top: 0;
 }
 
+.jump-to-results {
+  padding-top: 10px;
+}
+
 .network {
   margin-bottom: 2px;
   padding-top: 4px;
@@ -400,7 +404,7 @@ a:hover {
 #windows,
 #chat .content,
 .window {
-  background: var(--lurker-bg);
+  background: transparent;
 }
 
 #chat .messages {
@@ -788,7 +792,7 @@ pre,
 #chat .userlist .count .search,
 #chat .userlist .search {
   line-height: var(--member-line-height);
-  padding: 8px 30px 8px 10px;
+  padding: 8px 28px 8px 10px;
 }
 
 #chat .userlist .names {
@@ -810,7 +814,7 @@ pre,
   justify-content: center;
   line-height: 1 !important;
   pointer-events: none;
-  right: 8px;
+  right: 6px;
   top: 0;
   width: 18px;
 }
@@ -818,7 +822,8 @@ pre,
 /* WebKit paints the clear control of <input type="search"> with the system
    accent color. Replace only its artwork; the native click-to-clear behavior
    and input event are preserved. */
-#chat .userlist .search[type="search"]::-webkit-search-cancel-button {
+#chat .userlist .search[type="search"]::-webkit-search-cancel-button,
+.jump-to-input .input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
   background:
@@ -832,14 +837,15 @@ pre,
       transparent 58%);
   cursor: pointer;
   height: 12px;
-  margin-right: 8px;
+  margin-right: 0;
   opacity: 0.9;
   transform: translateY(-1px);
   vertical-align: middle;
   width: 12px;
 }
 
-#chat .userlist .search[type="search"]::-webkit-search-cancel-button:hover {
+#chat .userlist .search[type="search"]::-webkit-search-cancel-button:hover,
+.jump-to-input .input[type="search"]::-webkit-search-cancel-button:hover {
   background:
     linear-gradient(45deg,
       transparent 42%,
@@ -1081,6 +1087,11 @@ pre,
   color: var(--lurker-fg);
 }
 
+.mentions-popup {
+  top: 38px;
+  right: 65px;
+}
+
 .context-menu-divider {
   background: var(--lurker-border);
 }
@@ -1117,21 +1128,34 @@ form.message-search input {
   color: var(--lurker-fg) !important;
   color-scheme: dark;
   letter-spacing: -0.5px;
-  height: 25px;
+  height: 26px;
+  padding-right: 28px;
+  padding-top: 1px;
 }
 
 .jump-to-input {
-  margin: 6px 8px 3px 8px;
-  position: relative;
+  background: var(--lurker-bg);
+  margin: 0;
+  padding: 6px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  border-bottom: 1px solid var(--lurker-border);
 }
 
 /* Core pins this icon to a 35px line box. Center it geometrically so a
    compact jump input (currently 25px) does not push the glyph downward. */
 .jump-to-input::before {
+  align-items: center;
   bottom: auto;
+  display: flex;
+  height: 18px;
+  justify-content: center;
   line-height: 1 !important;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
+  width: 18px;
 }
 
 /* Channel filtering replaces .networks with a standalone result list, so it
@@ -1298,6 +1322,38 @@ textarea:focus {
   border-color: var(--lurker-accent);
   box-shadow: none;
   outline: 1px solid var(--lurker-accent);
+}
+
+#connect {
+  color-scheme: dark;
+}
+
+#connect .input,
+#connect select,
+#connect textarea {
+  background-color: var(--lurker-bg) !important;
+  border-color: var(--lurker-border) !important;
+  color: var(--lurker-fg) !important;
+  -webkit-text-fill-color: var(--lurker-fg);
+}
+
+#connect .input:not(:disabled):hover,
+#connect .input:not(:disabled):focus,
+#connect select:not(:disabled):hover,
+#connect select:not(:disabled):focus,
+#connect textarea:not(:disabled):hover,
+#connect textarea:not(:disabled):focus {
+  border-color: var(--lurker-accent) !important;
+  box-shadow: none;
+  outline: none;
+}
+
+#connect input:-webkit-autofill,
+#connect input:-webkit-autofill:hover,
+#connect input:-webkit-autofill:focus {
+  caret-color: var(--lurker-fg);
+  -webkit-box-shadow: 0 0 0 1000px var(--lurker-bg) inset !important;
+  -webkit-text-fill-color: var(--lurker-fg) !important;
 }
 
 /* Dracula previously supplied the high-specificity settings-control colors.
@@ -1639,6 +1695,10 @@ textarea:focus {
   #footer .icon {
     border-radius: 0;
   }
+
+  .mentions-popup {
+    inset: 38px 0 0;
+  }
 }
 
 /* Installed iOS PWAs can draw below the translucent status bar. Grow the
@@ -1670,6 +1730,14 @@ textarea:focus {
 }
 
 /* --- Input Colors ------------------------------------------------- */
+
+.password-container .reveal-password-visible span::before {
+  color: var(--lurker-bad) !important;
+}
+
+.password-container .reveal-password span::before {
+  color: var(--body-color-muted);
+}
 
 #chat .msg[data-type=error] .from:before {
   color: var(--body-color-muted) !important;
