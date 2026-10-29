@@ -966,6 +966,16 @@ pre,
   color: var(--lurker-good);
 }
 
+#chat form.message-search button {
+  color: var(--lurker-accent);
+}
+
+.topic-container .save-topic span {
+  color: var(--lurker-accent);
+  height: 23px;
+}
+
+
 /* --- Composer ----------------------------------------------------------- */
 
 #form {
