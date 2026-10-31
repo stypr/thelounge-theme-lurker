@@ -1808,7 +1808,7 @@ textarea:focus {
 }
 
 .channel-list-item .close:before {
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 /* --- 4.6.0-rc ------------------------------------------------- */
@@ -1868,7 +1868,6 @@ textarea:focus {
     background-color: color-mix(in srgb, var(--body-bg-color) 6%, var(--window-bg-color));
     border: 1px solid #edeef0;
     border-color: color-mix(in srgb, var(--body-color) 8%, var(--window-bg-color));
-    border-radius: 8px;
     margin-bottom: 16px;
     padding: 10px 20px 16px;
   }
@@ -1895,4 +1894,30 @@ textarea:focus {
     padding: 0;
     font-size: 11pt;
   }
+}
+
+#chat .msg[data-type=notice] .from .user:before {
+  content: "";
+}
+
+.show-more .btn:disabled {
+  color: #000;
+}
+
+.settings-menu,
+.settings-menu .settings-menu-toggle,
+.settings-menu ul,
+.settings-menu li button,
+.setting-radio-pills,
+.setting-card {
+  border-radius: 0px;
+}
+
+#settings textarea#user-specified-css-input {
+  min-height: 300px;
+  font-size: 8pt;
+}
+
+.setting-row+.setting-row-text {
+  display: table-cell;
 }
