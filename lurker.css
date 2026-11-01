@@ -1921,3 +1921,9 @@ textarea:focus {
 .setting-row+.setting-row-text {
   display: table-cell;
 }
+
+/* Keep line-height: 1 for monospace blocks to have a better visuals of ASCII art*/
+code, pre, .irc-monospace, #chat .msg[data-type="monospace_block"] .text {
+    line-height: 1;
+}
+
