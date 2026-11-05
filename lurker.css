@@ -1020,18 +1020,26 @@ pre,
 }
 
 /* RC2 inserts typing status after the form. Reorder it above the composer so
-   the 37px form remains pinned to—and aligned with—the sidebar footer. */
+   the 37px form remains pinned to—and aligned with—the sidebar footer.
+
+   Keep this row reserved even while nobody is typing. Removing it from layout
+   changes the chat viewport height when typing starts, which can leave the
+   final message hidden at the old scroll position. */
 #chat-container>.typing-indicator {
   background: var(--lurker-bg);
   border-top: 1px solid var(--lurker-border);
+  box-sizing: border-box;
   color: var(--lurker-muted);
-  min-height: 0;
+  flex: 0 0 16px;
+  height: 16px;
+  min-height: 16px;
   order: 1;
-  padding: 2px 12px 3px;
+  overflow: hidden;
+  padding: 2px 12px;
 }
 
 #chat-container>.typing-indicator:empty {
-  display: none;
+  visibility: hidden;
 }
 
 /* When status is visible, it owns the chat/composer separator; avoid drawing
