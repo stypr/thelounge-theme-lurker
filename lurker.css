@@ -411,6 +411,22 @@ a:hover {
   padding: 0 0 4px;
 }
 
+/* Keep a bottom-pinned conversation at the bottom when adjacent UI (such as
+   the typing indicator) changes height. Proximity snapping leaves manual
+   history scrolling alone, while the 1px end marker gives the browser a
+   stable bottom target without creating a visible empty row. */
+#chat .chat {
+  scroll-snap-type: y proximity;
+}
+
+#chat .messages::after {
+  content: "";
+  display: block;
+  height: 1px;
+  scroll-snap-align: end;
+  scroll-margin-block-end: 4px;
+}
+
 #chat .msg,
 #chat .msg[data-type="condensed"] .msg,
 .messages .msg {
@@ -1022,24 +1038,23 @@ pre,
 /* RC2 inserts typing status after the form. Reorder it above the composer so
    the 37px form remains pinned to—and aligned with—the sidebar footer.
 
-   Keep this row reserved even while nobody is typing. Removing it from layout
-   changes the chat viewport height when typing starts, which can leave the
-   final message hidden at the old scroll position. */
+   The message list's end snap point keeps the latest line visible when this
+   row appears, so no permanent empty row is needed. */
 #chat-container>.typing-indicator {
   background: var(--lurker-bg);
   border-top: 1px solid var(--lurker-border);
   box-sizing: border-box;
   color: var(--lurker-muted);
-  flex: 0 0 16px;
-  height: 16px;
-  min-height: 16px;
+  flex: 0 0 auto;
+  height: auto;
+  min-height: 0;
   order: 1;
   overflow: hidden;
   padding: 2px 12px;
 }
 
 #chat-container>.typing-indicator:empty {
-  visibility: hidden;
+  display: none;
 }
 
 /* When status is visible, it owns the chat/composer separator; avoid drawing
@@ -1559,6 +1574,10 @@ textarea:focus {
     padding: 0 0 14px;
   }
 
+  #chat .messages::after {
+    scroll-margin-block-end: 14px;
+  }
+
   /* Lurker's compact event row is prefix/icon + content + trailing time.
      Conversational rows override this below with their two-row head/body. */
   #chat .msg:not([data-type="condensed"]) {
@@ -1731,6 +1750,10 @@ textarea:focus {
     padding: 0;
   }
 
+  #chat .messages::after {
+    scroll-margin-block-end: 0;
+  }
+
   #sidebar,
   #chat .userlist {
     width: 88vw;
@@ -1834,7 +1857,8 @@ textarea:focus {
 }
 
 .channel-list-item[aria-label^="query:"] .status-icon .status-online,
-.channel-list-item[aria-label^="query:"] .status-icon .status-offline {
+.channel-list-item[aria-label^="query:"] .status-icon .status-offline,
+.channel-list-item[aria-label^="query:"] .status-icon .status-away {
   padding-right: 5px;
   margin-top: -2px;
 }
